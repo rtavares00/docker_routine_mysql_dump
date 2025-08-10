@@ -1,0 +1,22 @@
+services:
+  banco_mysql_playground:
+    build:
+      context: .
+      dockerfile: DockerfileBD
+    container_name: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./arquivos_sql:/docker-entrypoint-initdb.d
+      - ./backup:/sql
+  
+  agendador:
+    build:
+      context: .
+      dockerfile: DockerfileUbuntu
+    container_name: agendador
+    volumes:
+      - ./backup:/sql
+

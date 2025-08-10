@@ -1,0 +1,22 @@
+from ubuntu:latest
+
+run touch /registro.log
+run chmod 777 /registro.log
+
+run apt-get update
+run apt-get install -y sudo
+run apt-get install -y dos2unix
+run apt-get install -y vim
+run apt-get install -y cron
+run apt-get install -y mysql-client
+run apt-get upgrade -y
+
+# Ajuste do timezone
+run ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime && dpkg-reconfigure -f noninteractive tzdata
+
+copy ./cron/agendamento /etc/cron.d/agendamento
+run dos2unix /etc/cron.d/agendamento
+run chmod 0644 /etc/cron.d/agendamento
+run crontab /etc/cron.d/agendamento
+
+CMD ["cron", "-f"]
